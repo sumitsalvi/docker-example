@@ -1,0 +1,21 @@
+version: '3.5'
+services:
+  x-ray-daemon:
+    image: amazon/aws-xray-daemon
+    ports:
+      - "2000:2000/udp"
+    command: 
+      --local-mode
+      # --bind "127.0.0.1:2000"
+    # volumes:
+    #   - ~/.aws/:/root/.aws/:ro
+    environment:
+      - AWS_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=***
+      - AWS_SECRET_ACCESS_KEY=***
+  web:
+    build: .
+    ports:
+    - "5000:5000"
+    links:
+    - x-ray-daemon
